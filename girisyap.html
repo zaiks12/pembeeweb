@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giriş Yap</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="girisyap">
+    <h2>Giriş Yap</h2>
+    <form id="loginForm">
+      <label for="loginUsername">Kullanıcı Adı:</label>
+      <input type="text" id="loginUsername" placeholder="Kullanıcı adınızı girin" required><br>
+      <label for="loginPassword">Şifre:</label>
+      <input type="password" id="loginPassword" placeholder="Şifrenizi girin" required><br>
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <p>Hesabınız yok mu? <a href="uyeol.html">Üye Ol</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Kullanıcı adı ve şifreyi al
+      const loginUsername = document.getElementById("loginUsername").value;
+      const loginPassword = document.getElementById("loginPassword").value;
+
+      // LocalStorage'dan kayıtlı bilgileri al
+      const savedUsername = localStorage.getItem("username");
+      const savedPassword = localStorage.getItem("password");
+
+      // Kontrol et
+      if (loginUsername === savedUsername && loginPassword === savedPassword) {
+        alert("Giriş başarılı! Pembesiteye yönlendiriliyorsunuz.");
+        window.location.href = "pembesite.html"; // Pembesite sayfasına yönlendir
+      } else {
+        alert("Hatalı kullanıcı adı veya şifre. Lütfen tekrar deneyin.");
+      }
+    });
+  </script>
+</body>
+</html>

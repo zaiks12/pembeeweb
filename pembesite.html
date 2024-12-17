@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembe Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: pink;
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    #searchContainer {
+      margin: 20px auto;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      max-width: 500px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .video-container {
+      margin: 20px auto;
+      max-width: 800px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <!-- Hoş Geldin Mesajı -->
+  <h1 id="welcomeMessage">Hoş Geldin!</h1>
+
+  <!-- Arama Kutusu -->
+  <div id="searchContainer">
+    <input type="text" id="searchInput" placeholder="Video ismi veya uzantı ara (örn: 1.mp4, mp4)">
+  </div>
+
+  <!-- Video Listesi -->
+  <div id="videoList">
+    <!-- Videolar Burada Görünecek -->
+  </div>
+
+  <script>
+    // Kullanıcı adı göstermek için LocalStorage'dan veri al
+    const username = localStorage.getItem("username");
+    document.getElementById("welcomeMessage").innerText = `Hoş Geldin, ${username}!`;
+
+    // Videolar
+    const videoFiles = ["1.mp4", "2.mp4", "3.mp4", "4.mp4", "5.mp4", "6.mp4", "7.mp4"];
+    const videoList = document.getElementById("videoList");
+    const searchInput = document.getElementById("searchInput");
+
+    // Videoları Listele
+    function displayVideos(filter = "") {
+      videoList.innerHTML = ""; // Listeyi temizle
+      const filteredVideos = videoFiles.filter(file => file.includes(filter));
+      
+      if (filteredVideos.length === 0) {
+        videoList.innerHTML = "<p>Aradığınız kriterlere uygun video bulunamadı.</p>";
+        return;
+      }
+
+      // Videoları ekrana ekle
+      filteredVideos.forEach(file => {
+        const videoContainer = document.createElement("div");
+        videoContainer.className = "video-container";
+        videoContainer.innerHTML = `
+          <video controls>
+            <source src="${file}" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+          </video>
+          <p>${file}</p>
+        `;
+        videoList.appendChild(videoContainer);
+      });
+    }
+
+    // Sayfa yüklendiğinde videoları göster
+    displayVideos();
+
+    // Arama Kutusunu Dinle
+    searchInput.addEventListener("input", () => {
+      const searchTerm = searchInput.value.trim();
+      displayVideos(searchTerm);
+    });
+  </script>
+</body>
+</html>

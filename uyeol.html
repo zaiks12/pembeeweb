@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Üye Ol</title>
+  <link rel="stylesheet" href="style.css"> <!-- Stil Dosyası -->
+</head>
+<body>
+  <div id="uyeol" style="display: none;"> <!-- Başlangıçta gizli olacak -->
+    <h2>Üye Ol</h2>
+    <form id="registerForm">
+      <label for="username">Kullanıcı Adı:</label>
+      <input type="text" id="username" placeholder="Kullanıcı adınızı girin" required><br>
+      <label for="password">Şifre:</label>
+      <input type="password" id="password" placeholder="Şifrenizi girin" required><br>
+      <button type="submit">Kayıt Ol</button>
+    </form>
+    <p>Zaten hesabınız var mı? <a href="girisyap.html">Giriş Yap</a></p>
+  </div>
+
+  <script>
+    // Sayfa yüklendiğinde şifre kontrolü
+    window.onload = function () {
+      const correctPassword = "m12199199M"; // Doğru şifre
+      const userPassword = prompt("Bu sayfaya erişmek için şifreyi girin:");
+
+      if (userPassword === correctPassword) {
+        document.getElementById("uyeol").style.display = "block"; // Sayfayı göster
+      } else {
+        alert("Yanlış şifre! Erişim reddedildi.");
+        window.location.href = "about:blank"; // Boş bir sayfaya yönlendir
+      }
+    };
+
+    // Kayıt formu işlemleri
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Kullanıcı adı ve şifreyi al
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // LocalStorage'a kaydet
+      if (username && password) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
+        alert("Kayıt başarılı! Şimdi giriş yapabilirsiniz.");
+        window.location.href = "girisyap.html"; // Giriş sayfasına yönlendir
+      } else {
+        alert("Lütfen tüm alanları doldurun.");
+      }
+    });
+  </script>
+</body>
+</html>

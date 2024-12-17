@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ana Sayfa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header ve Menü -->
+  <header>
+    <div id="menu-container">
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" id="menu-icon">☰</label>
+      <nav id="menu">
+        <ul>
+          <li><a href="girisyap.html">Giriş Yap</a></li>
+          <li><a href="uyeol.html">Üye Ol</a></li> <!-- Üye Ol bağlantısı eklendi -->
+        </ul>
+      </nav>
+      <div id="site-title">Web Sitemize Hoş Geldiniz</div>
+    </div>
+  </header>
+
+  <!-- Ana İçerik: Yılan Oyunu -->
+  <main>
+    <h2>Yılan Oyunu</h2>
+    <canvas id="snakeGame" width="400" height="400"></canvas>
+    <div id="controls">
+      <button id="startBtn">Başlat</button>
+      <button id="stopBtn">Durdur</button>
+    </div>
+  </main>
+
+  <!-- Yılan Oyunu Scripti -->
+  <script>
+    const canvas = document.getElementById("snakeGame");
+    const context = canvas.getContext("2d");
+
+    const box = 20;
+    let snake = [{ x: 10 * box, y: 10 * box }];
+    let direction = "RIGHT";
+    let food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+    let game;
+
+    document.addEventListener("keydown", event => {
+      if ((event.key === "ArrowLeft" || event.key === "a") && direction !== "RIGHT") direction = "LEFT";
+      if ((event.key === "ArrowUp" || event.key === "w") && direction !== "DOWN") direction = "UP";
+      if ((event.key === "ArrowRight" || event.key === "d") && direction !== "LEFT") direction = "RIGHT";
+      if ((event.key === "ArrowDown" || event.key === "s") && direction !== "UP") direction = "DOWN";
+    });
+
+    function drawGame() {
+      context.fillStyle = "gray";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      context.fillStyle = "red";
+      context.fillRect(food.x, food.y, box, box);
+
+      context.fillStyle = "green";
+      snake.forEach(segment => context.fillRect(segment.x, segment.y, box, box));
+
+      let headX = snake[0].x;
+      let headY = snake[0].y;
+
+      if (direction === "LEFT") headX -= box;
+      if (direction === "UP") headY -= box;
+      if (direction === "RIGHT") headX += box;
+      if (direction === "DOWN") headY += box;
+
+      snake.unshift({ x: headX, y: headY });
+
+      if (headX === food.x && headY === food.y) {
+        food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+      } else {
+        snake.pop();
+      }
+
+      if (
+        headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height ||
+        snake.slice(1).some(segment => segment.x === headX && segment.y === headY)
+      ) {
+        clearInterval(game);
+        alert("Oyun Bitti!");
+      }
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      clearInterval(game);
+      snake = [{ x: 10 * box, y: 10 * box }];
+      direction = "RIGHT";
+      food = { x: Math.floor(Math.random() * 20) * box, y: Math.floor(Math.random() * 20) * box };
+      game = setInterval(drawGame, 100);
+    });
+
+    document.getElementById("stopBtn").addEventListener("click", () => clearInterval(game));
+  </script>
+</body>
+</html>
